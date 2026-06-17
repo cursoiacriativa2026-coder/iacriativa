@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 
-const checkoutUrl = "https://pay.hotmart.com/E103583426A";
+const checkoutUrl = "https://pay.hotmart.com/E103583426A?checkoutMode=10";
 const countdownDurationInSeconds = ((3 * 24 + 4) * 60 + 20) * 60;
 const professorImage =
   "https://i.ibb.co/WvgBWn7S/Chat-GPT-Image-26-de-jan-de-2026-16-09-14.png";
