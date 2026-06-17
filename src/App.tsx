@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 const checkoutUrl = "https://pay.hotmart.com/E103583426A";
+const countdownDurationInSeconds = ((3 * 24 + 4) * 60 + 20) * 60;
 const professorImage =
   "https://i.ibb.co/WvgBWn7S/Chat-GPT-Image-26-de-jan-de-2026-16-09-14.png";
 const familyImage =
@@ -182,9 +183,64 @@ function CtaLink({ children, href = checkoutUrl, variant = "primary", className 
   );
 }
 
+function CountdownBanner() {
+  const [remainingSeconds, setRemainingSeconds] = useState(countdownDurationInSeconds);
+
+  useEffect(() => {
+    const startedAt = Date.now();
+
+    const updateCountdown = () => {
+      const elapsedSeconds = Math.floor((Date.now() - startedAt) / 1000);
+      const cyclePosition = elapsedSeconds % countdownDurationInSeconds;
+      setRemainingSeconds(countdownDurationInSeconds - cyclePosition);
+    };
+
+    updateCountdown();
+    const interval = window.setInterval(updateCountdown, 1000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const days = Math.floor(remainingSeconds / 86400);
+  const hours = Math.floor((remainingSeconds % 86400) / 3600);
+  const minutes = Math.floor((remainingSeconds % 3600) / 60);
+  const seconds = remainingSeconds % 60;
+
+  const timeParts = [
+    { label: "dias", value: days },
+    { label: "horas", value: hours },
+    { label: "min", value: minutes },
+    { label: "seg", value: seconds },
+  ];
+
+  return (
+    <div className="sticky top-0 z-50 border-b-4 border-[#FACC15] bg-gradient-to-r from-[#8B0000] via-[#D60000] to-[#8B0000] px-4 py-4 text-white shadow-[0_18px_60px_rgba(139,0,0,0.38)]">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 text-center sm:flex-row sm:gap-7">
+        <p className="text-sm font-black uppercase tracking-[0.18em] text-white sm:text-lg">
+          Oferta por apenas R$ 27 termina em
+        </p>
+        <div className="flex items-center justify-center gap-2 font-black text-white sm:gap-3" aria-live="polite">
+          {timeParts.map((part, index) => (
+            <span key={part.label} className="inline-flex items-center gap-2">
+              <span className="rounded-xl bg-white px-3 py-2 text-3xl leading-none text-[#B00000] shadow-[0_10px_24px_rgba(0,0,0,0.2)] tabular-nums sm:px-4 sm:text-5xl">
+                {String(part.value).padStart(2, "0")}
+              </span>
+              <span className="text-[0.65rem] uppercase tracking-[0.14em] text-white/90 sm:text-xs">
+                {part.label}
+              </span>
+              {index < timeParts.length - 1 ? <span className="text-3xl text-[#FACC15] sm:text-5xl">:</span> : null}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <main className="min-h-screen overflow-hidden bg-white font-sans text-slate-950 selection:bg-[#FACC15] selection:text-[#001F3F]">
+      <CountdownBanner />
       <section className="relative isolate min-h-screen overflow-hidden bg-[#001F3F] text-white">
         <div
           className="hero-zoom absolute inset-0 bg-cover bg-center"
