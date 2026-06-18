@@ -214,25 +214,40 @@ function CountdownBanner() {
   ];
 
   return (
-    <div className="sticky top-0 z-50 border-b-4 border-[#FACC15] bg-gradient-to-r from-[#8B0000] via-[#D60000] to-[#8B0000] px-4 py-4 text-white shadow-[0_18px_60px_rgba(139,0,0,0.38)]">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 text-center sm:flex-row sm:gap-7">
-        <p className="text-sm font-black uppercase tracking-[0.18em] text-white sm:text-lg">
+    <div className="sticky top-0 z-50 border-b-4 border-[#FACC15] bg-gradient-to-r from-[#8B0000] via-[#D60000] to-[#8B0000] px-3 py-3 text-white shadow-[0_18px_60px_rgba(139,0,0,0.38)] sm:px-4 sm:py-4">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-2 text-center lg:flex-row lg:gap-7">
+        <p className="text-xs font-black uppercase leading-tight tracking-[0.12em] text-white sm:text-base lg:text-lg">
           Oferta por apenas R$ 27 termina em
         </p>
-        <div className="flex items-center justify-center gap-2 font-black text-white sm:gap-3" aria-live="polite">
+        <div
+          className="grid w-full max-w-[23rem] grid-cols-4 gap-1.5 font-black text-white sm:max-w-[34rem] sm:gap-2 lg:flex lg:w-auto lg:max-w-none lg:items-center lg:justify-center lg:gap-3"
+          aria-live="polite"
+        >
           {timeParts.map((part, index) => (
-            <span key={part.label} className="inline-flex items-center gap-2">
-              <span className="rounded-xl bg-white px-3 py-2 text-3xl leading-none text-[#B00000] shadow-[0_10px_24px_rgba(0,0,0,0.2)] tabular-nums sm:px-4 sm:text-5xl">
-                {String(part.value).padStart(2, "0")}
+            <span key={part.label} className="flex min-w-0 items-center justify-center gap-1 lg:gap-3">
+              <span className="flex min-w-0 flex-1 flex-col items-center rounded-lg bg-white px-1.5 py-1.5 text-[#B00000] shadow-[0_10px_24px_rgba(0,0,0,0.2)] sm:rounded-xl sm:px-3 sm:py-2 lg:flex-none lg:px-4">
+                <span className="tabular-nums text-2xl leading-none sm:text-4xl lg:text-5xl">
+                  {String(part.value).padStart(2, "0")}
+                </span>
+                <span className="mt-1 text-[0.55rem] uppercase tracking-[0.08em] text-[#B00000]/75 sm:text-[0.65rem]">
+                  {part.label}
+                </span>
               </span>
-              <span className="text-[0.65rem] uppercase tracking-[0.14em] text-white/90 sm:text-xs">
-                {part.label}
-              </span>
-              {index < timeParts.length - 1 ? <span className="text-3xl text-[#FACC15] sm:text-5xl">:</span> : null}
+              {index < timeParts.length - 1 ? (
+                <span className="hidden text-3xl text-[#FACC15] lg:inline sm:text-5xl">:</span>
+              ) : null}
             </span>
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+function PurchaseBand({ dark = false }: { dark?: boolean }) {
+  return (
+    <div className={dark ? "bg-[#050910] px-6 py-10 text-center sm:px-10" : "bg-white px-6 py-10 text-center sm:px-10"}>
+      <CtaLink className="w-full sm:w-auto">Garantir acesso por R$ 27</CtaLink>
     </div>
   );
 }
@@ -292,6 +307,8 @@ export default function App() {
         </div>
       </section>
 
+      <PurchaseBand dark />
+
       <section className="bg-[#F5F1E8]">
         <div className="grid min-h-[680px] lg:grid-cols-2">
           <div className="flex items-center px-6 py-20 sm:px-10 lg:px-16">
@@ -312,6 +329,8 @@ export default function App() {
           <div className="min-h-[420px] bg-cover bg-center lg:min-h-full" style={{ backgroundImage: `url(${familyImage})` }} />
         </div>
       </section>
+
+      <PurchaseBand />
 
       <section className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
@@ -349,6 +368,8 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      <PurchaseBand />
 
       <section className="bg-[#001F3F] py-24 text-white sm:py-32">
         <div className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
@@ -405,25 +426,29 @@ export default function App() {
                 Os bônus ajudam a acelerar os resultados com criações úteis, divertidas e fáceis de aplicar.
               </p>
             </div>
-            <div className="divide-y divide-white/15">
+            <div className="grid gap-8 sm:grid-cols-2">
               {bonuses.map((bonus) => (
-                <div key={bonus.label} className="grid gap-5 py-5 sm:grid-cols-[104px_120px_1fr] sm:items-center">
-                  <span className="text-sm font-black uppercase tracking-[0.22em] text-[#00D97E]">
-                    {bonus.label}
-                  </span>
+                <div key={bonus.label} className="border-t border-white/15 pt-6">
                   <img
                     src={bonus.image}
                     alt={`Capa ${bonus.title}`}
-                    className="bonus-cover h-28 w-28 object-contain sm:h-24 sm:w-24"
+                    className="bonus-cover mx-auto h-56 w-full object-contain sm:h-64 lg:h-72"
                     loading="lazy"
                   />
-                  <p className="text-xl font-black leading-7 text-white">{bonus.title}</p>
+                  <div className="mt-5">
+                    <span className="text-sm font-black uppercase tracking-[0.22em] text-[#00D97E]">
+                      {bonus.label}
+                    </span>
+                    <p className="mt-2 text-xl font-black leading-7 text-white">{bonus.title}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </section>
+
+      <PurchaseBand dark />
 
       <section className="bg-[#050910] py-24 text-white sm:py-32">
         <div className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
@@ -483,6 +508,8 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      <PurchaseBand dark />
 
       <section className="bg-[#F3F4F6] py-24 sm:py-32">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 sm:px-10 lg:grid-cols-[1fr_0.9fr] lg:px-12">
